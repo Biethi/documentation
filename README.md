@@ -13,10 +13,10 @@ For all documentations regarding the development/build environment and developom
 
 ### development tools
 
-- C++ boost library
-- libfuse-dev
+- C++ boost library (/)
+- libfuse-dev (/)
 
-#### cmake
+#### cmake (/)
 
 It is possible to take the cmake provided from the **Ubuntu Software** app, but this was not working with the vs code plugin for cmake.
 cmake is take from the official kitware ubuntu repo. Install the repo by following the steps on https://apt.kitware.com/.
@@ -32,4 +32,4 @@ cmake is take from the official kitware ubuntu repo. Install the repo by followi
 
 #### andoid studio
 
-#### smartgit
+#### smartgit (/)
