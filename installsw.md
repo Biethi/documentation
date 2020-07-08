@@ -35,4 +35,15 @@ My personal editor of choise is VS Code from *Microsoft&trade;*. It can be insta
 
 ## PyCharm
 
-The PyCharm Community Edition is an open source project from *jetbrains*. It can be installed with the **Ubuntu Software** app. So installation should be easy. To use a virtual environment for python projects the package *python3.8-venv* is needed as the default preinstalled version on *Ubuntu 20.04* is *python3.8*.
+The PyCharm Community Edition is an open source project from *jetbrains*. It can be installed with the **Ubuntu Software** app. So installation should be easy. To use a virtual environment for python projects the package *python3.8-venv* is needed as the default preinstalled version on *Ubuntu 20.04* is *python3.8*. When everything is installed no additional steps are needed if you want to use the standard directories and standard python version.
+
+## Android Studio
+
+For development of andoid apps I use *Andoid Studio* as IDE. So install the latest version with the **Ubuntu Software**. I installed the default modules and followed the steps provided to use kwm for virtualization. (see https://developer.android.com/studio/run/emulator-acceleration?utm_source=android-studio#vm-linux and https://help.ubuntu.com/community/KVM/Installation). In specific for Ubuntu 20.04 these commands need to be executed.
+
+```sh
+sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+sudo adduser `id -un` kvm
+```
+
+Confiure project and virtual device need to be done.
