@@ -84,7 +84,7 @@ sudo VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-5.2.6-120293
 
 Überprüfen, dass alles geklappt hat kann man das dann mit
 
-````sh
+```sh
 VBoxManage list extpacks
 ```
 
