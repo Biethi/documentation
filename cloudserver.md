@@ -8,6 +8,14 @@ I used the default server configuration for install, so most of the tools I need
 
 Follow the instructions on the screen to complete the server installation.
 
+### Automated updates
+
+For this purpose the apt feature unattended updates is used. This should be preinstalled with the common server installation. We can just do some additional configurations. Therefore open the `/etc/apt/apt.conf.d/50unattended-upgrades` file. In here you can add a e-mail address to send reports for updates or problems. Afterwards we need to configure the time period to do the unattended updates. Open `/etc/apt/apt.conf.d/20auto-upgrades` and add the following line.
+
+  APT::Periodic::Unattended-Upgrade "1";
+  
+This will trigger the updates every day at a random time slot.
+
 ## Nextcloud
 
 ### Remounting the RAID data storage
