@@ -13,8 +13,38 @@ Follow the instructions on the screen to complete the server installation.
 For this purpose the apt feature unattended updates is used. This should be preinstalled with the common server installation. We can just do some additional configurations. Therefore open the `/etc/apt/apt.conf.d/50unattended-upgrades` file. In here you can add a e-mail address to send reports for updates or problems. Afterwards we need to configure the time period to do the unattended updates. Open `/etc/apt/apt.conf.d/20auto-upgrades` and add the following line.
 
   APT::Periodic::Unattended-Upgrade "1";
-  
+
 This will trigger the updates every day at a random time slot.
+
+### Disk monitoring
+
+https://help.ubuntu.com/community/Smartmontools
+
+Modern disks come with internal self monitoring tools (SMART). To use these information to monitor your storage disks and inform you about any error you can use the `smartmontools` from the ubuntu repository. Just install the tool and the `smartd` daemon will be started with a default configuration.
+
+  sudo apt install smartmontools
+
+To monitor only your storage devices and adjust the actions taken when encounter an error you need to change some of the default configurations. Therefore open the file `/etc/smartd.conf` and add a line with all needed checks for every device you want to monitor. Below is an example file with some useful options. Consider reading the `smartd.conf` manual page for more detailed information.
+
+  sudo vi /etc/smartd.conf
+
+---
+**Hint:**
+
+Sometimes it is needed to read the SMART data from the disks to detect a broken one.
+
+  sudo smartctl --all /dev/sda
+
+---
+
+### Mail server
+
+https://askubuntu.com/questions/1112772/send-system-mail-ubuntu-18-04
+
+https://serverspace.io/support/help/postfix-as-a-send-only-smtp-on-ubuntu/
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-as-a-send-only-smtp-server-on-ubuntu-22-04
+
+We will use postfix as mailserver to send error notifications from our services.
 
 ## Nextcloud
 
@@ -31,6 +61,25 @@ To mount the data storage to the correct location for use as nextcloud storage a
   /dev/mapper/md0-crypt /var/snap/nextcloud/common/nextcloud ext3 defaults 0 0
 
 Restart the system and the storage should be mounted. You can check with `mount | grep md0`.
+
+### Replace RAID5 disk
+
+If a disk is about to fail it needs to be replaced in the RAID. If you can add a new disk without removing any of the existing once this is a fairly easy task. Just insert the new disk to your system and format it with a partition similar to the once already part of the RAID. The partition type should propably be `fd` which is `linux RAID auto`. Then detect the disk to be replaced and run the following commands.
+
+  sudo mdadm /dev/md0 --add /dev/<new disk>
+  sudo mdadm /dev/md0 --replace /dev/<failed disk>
+
+The new disk will first be added to the RAID device and then with the replace command the new disk will be build up to work as a replacement. This will take some time as all the data from the old disk needs to be copied or newly calculated.
+
+---
+**Hint:**
+
+To list all your RAID devices or list the current disks part of the RAID just use one of the below commands.
+
+  sudo mdadm -D --all
+  sudo mdadm -D /dev/md0
+
+---
 
 ### Initialize the nextcloud users
 
