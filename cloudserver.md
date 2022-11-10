@@ -115,6 +115,8 @@ For a Strato domain you get a SSL certifacte to connect it to your domain. But t
   sudo nextcloud.enable-https lets-encrypt
 
 Just follow the on screen instructions and enter all required information. After all is set up the Apache server will be restarted. If this worked without errors a secure connection to Nextcloud should be possible.
+  
+Just in case you get a email for renewing the certificate, this will be done automaticly by nextcloud. There should be a service `snap.nextcloud.renew-certs.service` which will take care of renewing your certificates automaticaly.
 
 ## The dynDNS daemon
 
