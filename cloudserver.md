@@ -81,6 +81,12 @@ To list all your RAID devices or list the current disks part of the RAID just us
 
 ---
 
+### Install Nextcloud snap
+
+Install the Nextcloud snap package and you should be good to go.
+
+  sudo snap install nextcloud
+
 ### Initialize the nextcloud users
 
 To initialize the Nextcloud users open the server IP in a web browser. The Nextcloud interface should be displayed and prompt you to add an administrator user. Just enter the initial user name and a password. This will create the user and all needed files and folders in the system.
@@ -138,3 +144,7 @@ If the IP was updated you can now access your home router through the internet i
 ## NTP service
 
 Route the domain inside the local network?
+
+## Onlyoffice document server
+
+Install the snap package with the next command. Documentation can be found on github (https://github.com/ONLYOFFICE/snap-documentserver).
