@@ -54,11 +54,11 @@ For the data storage I currently use three 2 TB harddrives which are used to cre
 
 As the device is also LUKS encrypted we first need to modify the `/etc/crypttab` file to encrypt the RAID device on system start. We will encrypt the device with a key file stored on the OS disk (`/root/disk_secret_key`). So first place the key file in the right location. Afterwards edit the `/etc/crypttab` as seen below. (Make sure the UUID is the one from your md0 device.)
 
-  md0-crypt UUID=a4cf23f6-ed79-4be1-bf55-61296a3b8d1b /root/disk_secret_key luks
+    md0-crypt UUID=a4cf23f6-ed79-4be1-bf55-61296a3b8d1b /root/disk_secret_key luks
 
 To mount the data storage to the correct location for use as nextcloud storage add the following line to `/etc/fstab`.
 
-  /dev/mapper/md0-crypt /var/snap/nextcloud/common/nextcloud ext3 defaults 0 0
+    /dev/mapper/md0-crypt /var/snap/nextcloud/common/nextcloud ext3 defaults 0 0
 
 Restart the system and the storage should be mounted. You can check with `mount | grep md0`.
 
@@ -66,8 +66,8 @@ Restart the system and the storage should be mounted. You can check with `mount 
 
 If a disk is about to fail it needs to be replaced in the RAID. If you can add a new disk without removing any of the existing once this is a fairly easy task. Just insert the new disk to your system and format it with a partition similar to the once already part of the RAID. The partition type should propably be `fd` which is `linux RAID auto`. Then detect the disk to be replaced and run the following commands.
 
-  sudo mdadm /dev/md0 --add /dev/<new disk>
-  sudo mdadm /dev/md0 --replace /dev/<failed disk>
+    sudo mdadm /dev/md0 --add /dev/<new disk>
+    sudo mdadm /dev/md0 --replace /dev/<failed disk>
 
 The new disk will first be added to the RAID device and then with the replace command the new disk will be build up to work as a replacement. This will take some time as all the data from the old disk needs to be copied or newly calculated.
 
@@ -76,8 +76,8 @@ The new disk will first be added to the RAID device and then with the replace co
 
 To list all your RAID devices or list the current disks part of the RAID just use one of the below commands.
 
-  sudo mdadm -D --all
-  sudo mdadm -D /dev/md0
+    sudo mdadm -D --all
+    sudo mdadm -D /dev/md0
 
 ---
 
@@ -85,7 +85,7 @@ To list all your RAID devices or list the current disks part of the RAID just us
 
 Install the Nextcloud snap package and you should be good to go.
 
-  sudo snap install nextcloud
+    sudo snap install nextcloud
 
 ### Initialize the nextcloud users
 
@@ -98,7 +98,7 @@ All additional users now can be added using the just created admin account.
 
 If an error is displayed saying the domain is untrusted you need to add the domain to the Nextcloud trusted domain list.
 
-  sudo nextcloud.occ config:system:set trusted_domains 2 --value=192.168.1.27
+    sudo nextcloud.occ config:system:set trusted_domains 2 --value=192.168.1.27
 
 ---
 
@@ -106,11 +106,17 @@ If an error is displayed saying the domain is untrusted you need to add the doma
 
 All domains which should be used to access the Nextclound server need to be added to the trusted domains property. To do so use the `nextcould.occ` command.
 
-  sudo nextcloud.occ config:system:set trusted_domains 3 --value=biethmann.de
+    sudo nextcloud.occ config:system:set trusted_domains 3 --value=biethmann.de
 
 ### Port forwarding
 
 To access your Nextcloud server through the internet you need to tell your router to send all requests for the corresponding port to the local server IP. To do so activate the port forwarding feature of your router and add a rule for your Nextcloud port(s). By default these port are 80 (HTTP) and 443 (HTTPS).
+
+Currently we have no global IPv4 address provided by O2. So we need to use the IPv6 address to access the server. Sadly the FritzBox is not capable of port forwarding the ports 80 and 443. Therefore we need to change the ports used by nextcloud (see also https://github.com/nextcloud-snap/nextcloud-snap/wiki/Port-configuration).
+
+    sudo snap set nextcloud ports.http=2780 ports.https=27443
+
+Now we can do the port forwarding for these ports and the server should be reachable.
 
 ### Enable SSL
 
@@ -118,7 +124,7 @@ https://askubuntu.com/questions/1223656/nextcloud-with-ssl
 
 For a Strato domain you get a SSL certifacte to connect it to your domain. But this included SSL certificate cannot be exported to another server, so we need to use some different solution. We will use the LetsEncrypt service to secure the connection to our server. All that is needed is a valid e-mail address and the domain(s) to be reached. Important is that port forwarding for both, the port 80 and 443, are configured in the home router, as these port will be used to check the connection and receive the certificate.
 
-  sudo nextcloud.enable-https lets-encrypt
+    sudo nextcloud.enable-https lets-encrypt
 
 Just follow the on screen instructions and enter all required information. After all is set up the Apache server will be restarted. If this worked without errors a secure connection to Nextcloud should be possible.
   
@@ -130,8 +136,8 @@ See the link for detailed information (https://help.ubuntu.com/community/Dynamic
 
 In general just install the `ddclient` and follow the instructions while installing. The needed information are a valid e-mail address, the server to send the update to (dyndns.strato.com/nic/update), the login (for stato this is the domain) and the password. After installation check if the configuration is working. This will also trigger IP address to be updated. The command should result with *SUCCESS*. Check also your dynDNS provider site if the IP address was updated properly.
 
-  sudo apt install ddclient
-  sudo ddclient -daemon=0 -debug -verbose -noquiet
+    sudo apt install ddclient
+    sudo ddclient -daemon=0 -debug -verbose -noquiet
 
 If the IP was updated you can now access your home router through the internet if this is allowed. As this could be a potential thread to your home network you should deactivate this feature if this is possible and is not done by default.
 
