@@ -1,5 +1,11 @@
 # Install instructions for cloud server
 
+## SMART
+
+It is important to check the health of the disks used for data inside the server. To do so we can monitor the SMART data from the disks. To do so we will use the `smartctl` command.
+
+    sudo smartctl -a /dev/sda
+
 ## Install the OS
 
 I choose to use Ubuntu 22.04 LTS Server version to run on my server PC. Get an installation image from the official ubuntu homepage and follow there instructions to create a bootable installation medium.
