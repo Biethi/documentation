@@ -136,6 +136,10 @@ Just follow the on screen instructions and enter all required information. After
   
 Just in case you get a email for renewing the certificate, this will be done automaticly by nextcloud. There should be a service `snap.nextcloud.renew-certs.service` which will take care of renewing your certificates automaticaly.
 
+As we moved the ports to some others than the standard 80 and 443, we also need to use self-signed SSL certificates as the lets-encrypt solution will not work without the standard ports. Solution is inspired from https://help.nextcloud.com/t/self-signed-cert-for-snap/47260
+
+    sudo nextcloud.enable-https self-signed
+
 ## The dynDNS daemon
 
 See the link for detailed information (https://help.ubuntu.com/community/DynamicDNS). Also check the Strato faq for details on the needed information to configure the dynDNS client (https://www.strato.de/faq/hosting/so-einfach-richten-sie-dyndns-fuer-ihre-domains-ein/).
